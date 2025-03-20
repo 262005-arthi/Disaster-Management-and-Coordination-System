@@ -1,0 +1,1079 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+#include<malloc.h>
+#include <windows.h>
+#include <stdbool.h>
+#include <limits.h>
+
+#define ENTER 13
+#define TAB 9
+#define BCKSPC 8
+#define tablesize 7
+#define MAX 20
+#define V 9
+
+struct user {
+    char fullName[50];
+    char email[50];
+    char password[50];
+    char username[50];
+    char phone[50];
+};
+
+struct node{
+int data;
+    char name[50];
+    long int number;
+    char address[100];
+    char services[200];
+    struct node *next;
+}**table,*pos,*temp,*p;
+
+struct school{
+    int injureddata;
+}s[100];
+
+struct Hospital{
+	int heavywound;
+}a[100];
+
+struct areac {
+    char area[20];
+    struct areac* next1;
+};
+
+struct QueueNode {
+    char area[20];
+    struct QueueNode* next;
+};
+
+struct people{
+    int injureddata;
+    int missing;
+}x[50];
+
+typedef struct {
+    int vertices[V][V];
+} Graph;
+
+int i;
+int hash(int);
+void initialize();
+struct node*find(int);
+void insert(int,char[50],char[100],long int,char[200]);
+void display();
+
+
+struct peopleearth{
+    int injureddata;
+    int missing;
+    int magnitude;
+}y[50];
+
+void printingagency();
+
+struct areac* G[MAX];
+bool visited[MAX];
+char parent[MAX][20];
+
+struct QueueNode* front = NULL;
+struct QueueNode* rear = NULL;
+
+int findIndex(char* area, char areas[MAX][20], int vertexCount);
+void initGraph(int, char areas[MAX][20]);
+void addEdges(int, char areas[MAX][20]);
+void insertEdge(char* vs, char* vd, int vertexCount, char areas[MAX][20]);
+void BFS(char* source, int vertexCount, char areas[MAX][20]);
+void Enqueue(char* area);
+char* Dequeue();
+void printShortestPath(char* destination, char areas[MAX][20]);
+void shortestpath(char [20],int);
+void bubbleSort(int [20] , int ,char [20][20]);
+void WaterAgency(char []);
+
+
+int minDistance(int dist[], bool sptSet[]);
+void printSolution(int dist[], int target, int parent[]);
+void printPath(int parent[], int j);
+void dijkstra(Graph* graph, int src, int target);
+void initializeGraph(Graph* graph);
+void addEdge(Graph* graph, int src, int dest, int weight);
+
+void LandSlideAgency(char []);
+
+void MeadicalTeam(char []);
+
+void EarthQuakeAgency(char []);
+
+void shelteragency(char []);
+
+int top=-1;
+int topl=-1;
+
+void shelteragency(char lo[20]){
+	printf("The team  assist the location %s shortly with shelter\n",lo);
+}
+void takeinput(char ch[50]) {
+    fgets(ch, 50, stdin);
+    ch[strcspn(ch, "\n")] = 0; // Replace newline character with null terminator
+}
+
+void generateUsername(char email[50], char username[50]) {
+    int i;
+    for (i = 0; i < strlen(email); i++) {
+        if (email[i] == '@') break;
+        else username[i] = email[i];
+    }
+    username[i] = '\0'; // Null-terminate the username string
+}
+
+void takepassword(char pwd[50]) {
+    int i = 0;
+    char ch;
+    while (1) {
+        ch = getch();
+        if (ch == ENTER || ch == TAB) {
+            pwd[i] = '\0';
+            break;
+        } else if (ch == BCKSPC) {
+            if (i > 0) {
+                i--;
+                printf("\b \b");
+            }
+        } else {
+            pwd[i++] = ch;
+            printf("*");
+        }
+    }
+}
+
+int main() {
+    
+    system("color 0b");
+    FILE *fp;
+    int opt, usrFound = 0;
+    struct user user;
+    char password2[50];
+
+    printf("\n\t\t\t\t----------Welcome to Disaster Management system----------");
+    printf("\nPlease choose your operation");
+    printf("\n1. Signup");
+    printf("\n2. Login");
+    printf("\n3. Exit");
+for (;;){
+    printf("\n\nYour choice:\t");
+    scanf("%d", &opt);
+    fgetc(stdin); // To consume the newline character left by scanf
+    switch (opt) {
+        case 1:
+            system("cls");
+            printf("\nEnter your full name:\t");
+            takeinput(user.fullName);
+            printf("Enter your email:\t");
+            takeinput(user.email);
+            printf("Enter your contact no:\t");
+            takeinput(user.phone);
+            printf("Enter your password:\t");
+            takepassword(user.password);
+            printf("\nConfirm your password:\t");
+            takepassword(password2);
+
+            if (!strcmp(user.password, password2)) {
+                generateUsername(user.email, user.username);
+                fp = fopen("Users.dat", "a+");
+                if (fp != NULL) {
+                    fwrite(&user, sizeof(struct user), 1, fp);
+                    if (fwrite != 0) {
+                        printf("\n\nUser registration successful, Your username is %s", user.username);
+                    } else {
+                        printf("\n\nSorry! Something went wrong :(");
+                    }
+                    fclose(fp);
+                } else {
+                    printf("\n\nError opening file!");
+                }
+            } else {
+                printf("\n\nPasswords do not match");
+                Beep(750, 300);
+            }
+            break;
+
+        case 2: {
+            char username[50], pword[50];
+            struct user usr;
+
+            printf("\nEnter your username:\t");
+            takeinput(username);
+            printf("Enter your password:\t");
+            takepassword(pword);
+
+            fp = fopen("Users.dat", "r");
+            if (fp != NULL) {
+                while (fread(&usr, sizeof(struct user), 1, fp)) {
+                    if (!strcmp(usr.username, username)) {
+                        if (!strcmp(usr.password, pword)) {
+                            system("cls");
+                            printf("\n\t\t\t\t\t\tWelcome %s", usr.fullName);
+                            printf("\n\n|Full Name:\t%s", usr.fullName);
+                            printf("\n|Email:\t\t%s", usr.email);
+                            printf("\n|Username:\t%s", usr.username);
+                            printf("\n|Contact no.:\t%s", usr.phone);
+                        } else {
+                            printf("\n\nInvalid Password!");
+                            Beep(800, 300);
+                            return 0;
+                        }
+                        usrFound = 1;
+                        break;
+                    }
+                }
+                if (!usrFound) {
+                    printf("\n\nUser is not registered!");
+                    Beep(800, 300);
+                    return 0;
+        }
+                fclose(fp);
+            } else {
+                printf("\n\nError opening file!");
+                return 0;
+            }
+            printf("\n\n\n\n");
+            printingagency();
+            int ch;
+		int alphacount=0;
+		int barvocount=0;
+		int capecount=0;
+		int alphacountw=0,barvocountw=0,capecountw=0;
+		int alphacountl=0,barvocountl=0,capecountl=0;
+            for(;;){
+            printf("\nEnter your Choice:");
+            scanf("%d",&ch);
+        	switch(ch) {
+            		case 1:{
+            			char lo[20];
+				printf("Enter the disaster type:");
+				scanf("%s",lo);
+				shelteragency(lo);
+				break;
+		}
+            		case 2:{
+				printf("Teams Available......\n");
+            			if (alphacount == 0 && barvocount == 0 && capecount == 0){
+            			printf("Alpha\nBarvo\nCape\n");
+				    }
+				else if (alphacount == 1 && barvocount == 0 && capecount == 0){
+            			printf("Barvo\nCape\n");
+				}
+				else if (barvocount ==1 && alphacount == 0 && capecount == 0){
+					printf("Alpha\nCape\n");
+				}
+				else if(capecount == 1 && alphacount == 0 && barvocount == 0)
+				printf("\nAlpha\nBarvo");
+				else if(alphacount == 1 && barvocount ==1)
+				printf("Cape\n");
+				else if (alphacount == 1 && capecount  ==1 ){
+					printf("Barvo\n");
+				}
+				else if (barvocount == 1 && capecount == 1)
+				printf("Alpha\n");
+				else {
+					printf("\nThere is no team available you can call other agency\n");
+				}
+            			char tn[20];
+            			printf("Enter the team you want:\n");
+            			scanf("%s",tn);
+				if (strcmp(tn,"Alpha")==0){
+            			WaterAgency("Alpha");
+            			alphacount = alphacount + 1;
+				break; 
+			}
+				if (strcmp(tn,"Barvo")==0){
+            			WaterAgency("Barvo");
+            			barvocount = barvocount + 1;
+				break;
+			}
+			if (strcmp(tn,"Cape")==0){
+            			WaterAgency("Cape");
+            			capecount = capecount + 1;
+				break;
+			}
+            			break;
+            	}
+            		case 3:{
+				printf("Teams Available......\n");
+            			if (alphacountw == 0 && barvocountw == 0 && capecountw == 0){
+            			printf("Alpha\nBarvo\nCape\n");
+				    }
+				else if (alphacountw == 1 && barvocountw == 0 && capecountw == 0){
+            			printf("Barvo\nCape\n");
+				}
+				else if (barvocountw ==1 && alphacountw == 0 && capecountw == 0){
+					printf("Alpha\nCape\n");
+				}
+				else if(capecountw == 1 && alphacountw == 0 && barvocountw == 0)
+				printf("\nAlpha\nBarvo");
+				
+				else if(alphacountw == 1 && barvocountw ==1)
+				printf("Cape\n");
+				
+				else if (alphacountw == 1 && capecountw  ==1 ){
+					printf("Barvo\n");
+				}
+				
+				else if (barvocountw == 1 && capecountw == 1)
+				printf("Alpha\n");
+				
+				else {
+					printf("\nThere is no team available you can call other agency\n");
+				}
+				
+            			char tn[20];
+            			printf("Enter the team you want:\n");
+            			scanf("%s",tn);
+				if (strcmp(tn,"Alpha")==0){
+            			EarthQuakeAgency("Alpha");
+            			alphacountw = alphacountw + 1;
+				break; 
+			}
+				if (strcmp(tn,"Barvo")==0){
+            			EarthQuakeAgency("Barvo");
+            			barvocountw = barvocountw + 1;
+				break;
+			}
+			if (strcmp(tn,"Cape")==0){
+            			EarthQuakeAgency("Cape");
+            			capecountw = capecountw + 1;
+				break;
+			}
+            			break;
+            	}
+			case 4:{
+			printf("Teams Available......\n");
+            			if (alphacountl == 0 && barvocountl == 0 && capecountl == 0){
+            			printf("Alpha\nBarvo\nCape\n");
+				    }
+				else if (alphacountl == 1 && barvocountl == 0 && capecountl == 0){
+            			printf("Barvo\nCape\n");
+				}
+				else if (barvocountl ==1 && alphacountl == 0 && capecountl == 0){
+					printf("Alpha\nCape\n");
+				}
+				else if(capecountl == 1 && alphacountl == 0 && barvocountl == 0)
+				printf("\nAlpha\nBarvo");
+				
+				else if(alphacountl == 1 && barvocountl ==1)
+				printf("Cape\n");
+				
+				else if (alphacountl == 1 && capecountl  ==1 ){
+					printf("Barvo\n");
+				}
+				else if (barvocountl == 1 && capecountl == 1)
+				printf("Alpha\n");
+				
+				else {
+					printf("\nThere is no team available you can call other agency\n");
+				}
+            			char tn[20];
+            			printf("Enter the team you want:\n");
+            			scanf("%s",tn);
+				if (strcmp(tn,"Alpha")==0){
+				LandSlideAgency("Alpha");
+            			alphacountl = alphacountl + 1;
+				break; 
+			}
+				if (strcmp(tn,"Barvo")==0){
+				LandSlideAgency("Barvo");
+            			barvocountl = barvocountl + 1;
+				break;
+			}
+			if (strcmp(tn,"Cape")==0){
+				LandSlideAgency("Cape");
+            			capecountl = capecountl + 1;
+				break;
+			}
+            			break;
+            	}
+			case 5:{
+				char lo[20];
+				printf("Enter the disaster type:");
+				scanf("%s",lo);
+				MeadicalTeam(lo);
+				break;
+		}
+			case 6:
+				printf("You are LogOut");
+				return 0;
+		    }
+	    }
+	    break;
+        
+
+        case 3:
+            printf("\t\t\tBye Bye :)");
+            return 0;
+            break;
+
+        default:
+            printf("Invalid choice!");
+    }
+
+}
+}
+return 0;
+}
+
+void printingagency(){
+    initialize();
+    insert(5,"Shelter Agency","Shelter service",7986,"chennai");
+    insert(6,"Fire agency","Fire service",6544,"chennai");
+    insert(2,"Flood agency","Flood service",7986,"chennai");
+    insert(3,"Earth Quake Agency","Earth Quake Rescue Team",2389,"chennai");
+    insert(4,"Land Slide Agency","Land Slide Rescue Team",6795,"chennai");
+    insert(1,"Medical Agency","Medical Rescue Team",8765,"chennai");
+    display();
+}
+
+//Hash Function Implementation
+int hash(int key){
+    return (key%tablesize);
+}
+//Hash Table Initialization
+void initialize(){
+    table=(struct node**)malloc(tablesize*sizeof(struct node*));
+    for(i=0;i<tablesize;i++)
+        table[i]=NULL;
+}
+//Algorithm to find the location of key element
+struct node*find(int key){
+    p=table[hash(key)];
+    while(p!=NULL&&p->data!=key)
+        p=p->next;
+    return p;
+}
+//Algorithm for insertion
+void insert(int key,char n1[50],char ser1[200],long int cn1,char add1[100]){
+    pos=find(key);
+    if(pos==NULL){
+        temp=(struct node*)malloc(sizeof(struct node));
+        p=table[hash(key)];
+        temp->next=p;
+        temp->data=key;
+        strcpy(temp->name,n1);
+        strcpy(temp->services,ser1);
+        temp->number=cn1;
+        strcpy(temp->address,add1);
+        table[hash(key)]=temp;
+    }
+}
+//Display the hash table contents
+void display(){
+    if(table==NULL){
+        printf("\nSorry hash table is empty");
+        return;
+    }
+    printf("\nIndex\t Values in table");
+    for(i=0;i<tablesize;i++){
+        p=table[i];
+        printf("\n%d\t",i);
+        while(p!=NULL){
+            printf("%d-->%s--%s--%ld--%s",p->data,p->name,p->services,p->number,p->address);
+            p=p->next;
+            if (p != NULL)
+                printf("\n\t");
+        }
+    }    
+}
+
+//FLOOD AGENCY
+void WaterAgency(char tn[20]){
+	
+	char location[20][20],w[5];
+	char locationin[20];
+	int population[20],i,j,n,teamcapacity,flag,totalpopulation;
+	int teamcapacityt[20];
+	totalpopulation = 0;
+	printf("\nEnter the number of location:");
+	scanf("%d",&n);
+	for(i=0; i<n; i++){
+	        printf("Enter the location with population for region %d:",i+1);
+	        scanf("%s",location[i]);
+	        scanf("%d",&population[i]);
+	        totalpopulation = totalpopulation + population[i];
+	}
+	printf("Do you want rescue team for all region....");
+	scanf("%s",w);
+	if (strcmp(w,"no") == 0){
+	printf("\nEnter the location you are in:");
+	scanf("%s",locationin);
+        for (j=0; j<n; j++){
+	        if(strcmp(locationin,location[j]) == 0){
+        		flag=j;
+		}
+	}
+	if (population[flag] <100)
+		teamcapacity=5;
+	else if (population[flag]>100 && population[flag] <1000)
+	        teamcapacity = 10;
+	else if (population[flag] >1000 && population[flag] < 10000)
+		teamcapacity = 15;
+	else if (population[flag] >10000 )
+		teamcapacity = 20;
+}
+else{
+	bubbleSort(population  , n ,location);
+	for (i=0; i<n; i++){
+	if (population[i] <=100)
+		teamcapacityt[i]=5;
+	else if (population[i]>100 && population[i] <1000)
+	        teamcapacityt[i] = 10;
+	else if (population[i] >=1000 && population[i] < 10000)
+		teamcapacityt[i] = 15;
+	else if (population[i] >=10000 )
+		teamcapacityt[i] = 20;
+	printf("\nRescue %s is arriving to the location -->%s with %d members\n",tn,location[i],teamcapacityt[i]);
+	}
+}
+	int count=0,injuredc,heavywoundc;
+	count=count+1;
+	if (count == 1){
+		MeadicalTeam("flood");
+		printf("\nTeam Leader is Monitoring all the Datas\n");
+		printf("\nEnter the number of people injured:");
+		scanf("%d",&injuredc);
+		shortestpath("school",n);
+		printf("\nEnter the no of people who are affected by the heavy wound:");
+		scanf("%d",&heavywoundc);
+		shortestpath("hospital",n);
+		
+        FILE *p3 = fopen("WaterAgency.txt", "a+");
+        if (p3 == NULL) {
+            perror("Error opening file");
+            return;
+}
+
+        fprintf(p3, "Location Number\t\t\tPopulation\t\t\tNo of People Assigned\n");
+        for (i = 0; i < n; i++) {
+            fprintf(p3, "%s\t\t%d\t\t%d\n", location[i], population[i], teamcapacityt[i]);
+        }
+        fprintf(p3, "Total Population:\t\t%d\n", totalpopulation);
+        fprintf(p3, "No of people injured:\t\t%d\n", injuredc);
+        fprintf(p3, "No of people with heavy wounds:\t\t%d\n", heavywoundc);
+        fclose(p3);
+
+		
+        printf("\n\n\n\n\n\n\n");
+        printf("Printing Report..........\n");
+        printf("%-15s | %s\t |", "Location", "Population");
+        printf("%-15s | %s\n",  "No of people Assigned ");
+        printf("----------------|--------------|-----------------\n");
+        for (i = 0; i < n; i++) {
+            printf("%-15s | %-10d | %d\n", location[i], population[i], teamcapacityt[i]);
+        }
+        printf("-----------------------------\n");
+        printf("%-15s | %d\n", "Total Population", totalpopulation);
+        printf("-----------------------------\n");
+        printf("Team Name                : %s\n",tn);
+        printf("-----------------------------\n");
+        printf("No of people injured     : %d\n",injuredc);
+        printf("No of people heavywound  : %d\n",heavywoundc);
+        printf("-----------------------------\n");
+        printf("Facilities Provided......\n");
+        printf("Medical Team with.....\n");
+        MeadicalTeam("flood");
+	}
+}
+
+void MeadicalTeam(char nameag[20]){
+	if(strcmp(nameag,"flood") == 0){
+		printf("\n\nMedical team arriving to the location with\n");
+		printf("\nBoat\nFirst Aid Kit\nOxygen Cylinder\nDiagnostic Tools\nMedical Equipment\nMedications\n");
+}
+        if(strcmp(nameag,"land") == 0){
+		printf("\n\nMedical team arriving to the location with\n");
+                printf("\nAmbulance\nFirst Aid Kit\nOxygen Cylinder\nDiagnostic Tools\nMedical Equipment\nMedications\n");
+	}
+	if (strcmp(nameag,"earth")==0){
+		printf("\n\nMedical team arriving to the location with\n");
+                printf("\nAmbulance\nFirst Aid Kit\nOxygen Cylinder\nDiagnostic Tools\nMedical Equipment\nMedications\n");
+	}
+}
+
+int findIndex(char* area, char areas[MAX][20], int vertexCount) {
+	int i;
+    for ( i = 0; i < vertexCount; i++) {
+        if (strcmp(area, areas[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void initGraph(int v, char areas[MAX][20]) {
+	int i;
+    for ( i = 0; i < v; i++) {
+        G[i] = NULL;
+        visited[i] = false;
+        strcpy(parent[i], "-1");
+    }
+}
+
+void addEdges(int e, char areas[MAX][20]) {
+    char vs[20], vd[20];
+    int i;
+    for ( i = 0; i < e; i++) {
+        printf("Enter an connected areas (u v): ");
+        scanf("%s %s", vs, vd);
+        insertEdge(vs, vd, MAX, areas);
+        insertEdge(vd, vs, MAX, areas);
+    }
+}
+
+void insertEdge(char* vs, char* vd, int vertexCount, char areas[MAX][20]) {
+    struct areac* tempw = (struct areac*)malloc(sizeof(struct areac));
+    strcpy(tempw->area, vd);
+    tempw->next1 = NULL;
+
+    int index = findIndex(vs, areas, vertexCount);
+    if (index == -1) return;
+
+    if (G[index] == NULL) {
+        G[index] = tempw;
+    } else {
+        struct areac* p = G[index];
+        while (p->next1 != NULL)
+            p = p->next1;
+        p->next1 = tempw;
+    }
+}
+
+void BFS(char* source, int vertexCount, char areas[MAX][20]) {
+    Enqueue(source);
+    int sourceIndex = findIndex(source, areas, vertexCount);
+    visited[sourceIndex] = true;
+
+    while (front != NULL) {
+        char* currentArea = Dequeue();
+        int currentIndex = findIndex(currentArea, areas, vertexCount);
+        struct areac* tempw = G[currentIndex];
+
+        while (tempw) {
+            int adjIndex = findIndex(tempw->area, areas, vertexCount);
+            if (!visited[adjIndex]) {
+                Enqueue(tempw->area);
+                visited[adjIndex] = true;
+                strcpy(parent[adjIndex], currentArea);
+            }
+            tempw = tempw->next1;
+        }
+    }
+}
+
+void printShortestPath(char* destination, char areas[MAX][20]) {
+
+    int destIndex = findIndex(destination, areas, MAX);
+    if (strcmp(parent[destIndex], "-1") == 0) {
+        printf("No path exists\n");
+        return;
+    }
+
+    char path[MAX][20];
+    int pathLength = 0;
+    strcpy(path[pathLength++], destination);
+
+    char current[20];
+    strcpy(current, parent[destIndex]);
+    while (strcmp(current, "-1") != 0) {
+        strcpy(path[pathLength++], current);
+        int currentIndex = findIndex(current, areas, MAX);
+        strcpy(current, parent[currentIndex]);
+    }
+    int i;
+    for ( i = pathLength - 1; i >= 0; i--) {
+        printf("%s", path[i]);
+        if (i != 0) printf(" -> ");
+    }
+    printf("\n");
+}
+
+void Enqueue(char* area) {
+    struct QueueNode* newNode = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    strcpy(newNode->area, area);
+    newNode->next = NULL;
+
+    if (rear == NULL) {
+        front = rear = newNode;
+    } else {
+        rear->next = newNode;
+        rear = newNode;
+    }
+}
+
+char* Dequeue() {
+    if (front == NULL) {
+        printf("Queue is empty\n");
+        exit(1);
+    }
+
+    struct QueueNode* temp = front;
+    char* area = temp->area;
+    front = front->next;
+
+    if (front == NULL) {
+        rear = NULL;
+    }
+
+    return area;
+}
+
+void shortestpath(char x[10],int n){
+if (strcmp(x,"school") == 0) {
+    	FILE *p1;
+	p1=fopen("area.txt","w");
+    int vertices, edges;
+    printf("Enter the number of places and connected path: ");
+    scanf("%d %d", &vertices, &edges);
+
+    char areas[MAX][20];
+    int i;
+    for ( i = 0; i < vertices; i++) {
+        printf("Enter area name for place %d: ", i + 1);
+        scanf("%s", areas[i]);
+        fprintf(p1,"%s\t \n",areas[i]);
+    }
+
+    initGraph(vertices, areas);
+    addEdges(edges, areas);
+
+    char source[20], destination[20];
+    printf("Enter the source vertex: ");
+    scanf("%s", source);
+    printf("Enter the destination vertex: ");
+    scanf("%s", destination);
+
+    BFS(source, vertices, areas);
+    printf("\nTaken Them to School by the path:");
+    printf("Shortest path from %s to %s: ", source, destination);
+    printShortestPath(destination, areas);
+    fclose(p1);
+}
+
+else {  
+    FILE *p2;
+    p2=fopen("area.txt","r");
+    char source[20], destination[20],areas[MAX][20];
+    int i;
+    //fgets(areas,15,p2);
+        for (i = 0; i < n; i++) {
+            fscanf(p2, "%s", areas[i]); // Read area names from file
+}
+    
+   // printf("Enter the source vertex: ");
+   // scanf("%s", source);
+    printf("Enter the destination vertex: ");
+    scanf("%s", destination);
+
+    BFS(source, n, areas);
+
+    printf("\nTaken Them to Hospital by the path:");
+    printf("Shortest path from %s to %s: ", source, destination);
+    printShortestPath(destination, areas);
+}
+}
+
+void bubbleSort(int population[20], int n,char location[20][20]){
+	int flag,i,j;
+	char temploca[20];
+    for ( i = 0; i < n - 1; i++) {
+        flag = 0; // Initialize flag to 0 for each pass
+        for ( j = 0; j < n - i - 1; j++) {
+            if (population[j] > population[j + 1]) {
+                int temp = population[j];
+                population[j] = population[j + 1];
+                population[j + 1] = temp;
+                
+                strcpy(temploca,location[j]);
+                strcpy(location[j],location[j+1]);
+                strcpy(location[j+1],temploca);
+                flag = 1; // Set flag to 1 if a swap is made
+            }
+        }
+        // If no swap is made in a pass, array is already sorted, break out of the loop
+        if (flag == 0)
+            break;
+    }
+ for (i = 0; i < n; i++) {
+        printf("%s: %d\n", location[i], population[i]);
+    }
+}
+
+//LANDSLIDE AGENCY
+
+void LandSlideAgency(char tn[20]){
+	Graph graph;
+    	initializeGraph(&graph);
+
+    // Add edges to the graph
+    addEdge(&graph, 0, 1, 10);
+    addEdge(&graph, 0, 3, 6);
+    addEdge(&graph, 1, 2, 5);
+    addEdge(&graph, 1, 4, 11);
+    addEdge(&graph, 2, 5, 10);
+    addEdge(&graph, 2, 8, 180);
+    addEdge(&graph, 3, 4, 8);
+    addEdge(&graph, 3, 6, 6);
+    addEdge(&graph, 4, 5, 4);
+    addEdge(&graph, 4, 6, 12);
+    addEdge(&graph, 4, 7, 26);
+    addEdge(&graph, 5, 8, 140);
+    addEdge(&graph, 6, 7, 7);
+    addEdge(&graph, 7, 8, 115);
+	char location[20][20];
+	int population,i,j,n,teamcapacity,flag,injured,choice,missing1;
+   	 printf("Select your location:\n");
+   	 printf("0] T. Nagar (Thyagaraya Nagar)\t 1] Velachery\t2] Madipakkam\n");
+    	 printf("3] Adyar\t4] Mylapore\t5] Guindy\n");
+   	 printf("6] Perungudi\t7] Tambaram\t8] Ambattur\n");
+	printf("\nEnter the location you are in:");
+	scanf("%d",&choice);
+	printf("Enter the population for above specified region :");
+	scanf("%d",&population);
+        flag=choice;
+	if (population <100)
+		teamcapacity=5;
+	else if (population>100 && population <1000)
+	        teamcapacity = 10;
+	else if (population >1000 && population < 10000)
+		teamcapacity = 15;
+	else if (population >10000 )
+		teamcapacity = 20;
+	printf("\nRescue Team 1 is arriving to the location -->%d with %d members\n",choice,teamcapacity);
+        
+		
+	if (choice >= 0 && choice < V) {
+        	dijkstra(&graph, 0, choice); // Assume 0 as the source vertex
+    }
+    	else {
+        	printf("Invalid choice.\n");
+    }
+    ++topl;
+    printf("Enter No of People injured:");
+    scanf("%d",&injured);
+    x[topl].injureddata=injured;
+    missing1 = population - injured;
+    x[topl].missing = missing1;
+       FILE *p2;
+    p2 = fopen("landslide.txt", "a+");
+    fprintf(p2, "Location Number:");
+    fprintf(p2, "%d\n", choice);
+    fprintf(p2, "Total Population: ");
+    fprintf(p2, "%d\n", population);
+    fprintf(p2, "Team Capacity:");
+    fprintf(p2, "%d\n", teamcapacity);
+    fprintf(p2, "No of People injured:");
+    fprintf(p2, "%d\n", x[topl].injureddata);
+    fprintf(p2, "No of People Missing:");
+    fprintf(p2, "%d\n", x[topl].missing);
+    fclose(p2);
+    printf("\n\n\n\n\n");
+    printf("Printing the report\n");
+    printf("-----------------------------\n");
+    printf("Location Number:      %d\n",choice);
+    printf("-----------------------------\n");
+    printf("Team Name                : %s\n",tn);
+    printf("-----------------------------\n");
+    printf("Total Population:     %d\n",population);
+    printf("-----------------------------\n");
+    printf("Team Capacity:        %d\n",teamcapacity);
+    printf("-----------------------------\n");  
+    printf("No of Peoples injured:%d\n",x[topl].injureddata);
+    printf("-----------------------------\n");
+    printf("No of Peoples Missed: %d\n",x[topl].missing);
+    printf("-----------------------------\n");
+    printf("Facilities Provided.....");
+    MeadicalTeam("land");
+    printf("-----------------------------\n");   
+}
+
+// Function to find the vertex with the minimum distance value
+int minDistance(int dist[], bool sptSet[]) {
+    int min = INT_MAX, min_index;
+    int v;
+    for ( v = 0; v < V; v++)
+        if (!sptSet[v] && dist[v] <= min)
+            min = dist[v], min_index = v;
+
+    return min_index;
+}
+
+// Function to print the distance and path from the source to the target
+void printSolution(int dist[], int target, int parent[]) {
+    printf("Vertex \t\t Distance from Source\n");
+    printf("%d \t\t\t\t %d\n", target, dist[target]);
+    printf("Path: ");
+    printf("0 ");
+    printPath(parent, target);
+    printf("\n");
+}
+
+// Function to print the path from the source to the target
+void printPath(int parent[], int j) {
+    if (parent[j] == -1)
+        return;
+    printPath(parent, parent[j]);
+    printf("%d ", j);
+}
+
+// Function to implement Dijkstra's algorithm
+void dijkstra(Graph* graph, int src, int target) {
+    int dist[V];  // Output array. dist[i] will hold the shortest distance from src to i
+    bool sptSet[V]; // sptSet[i] will be true if vertex i is included in shortest path tree
+    int parent[V];  // Array to store the shortest path tree
+    int i,count,v;
+    // Initialize all distances as INFINITE and sptSet[] as false
+    for ( i = 0; i < V; i++) {
+        dist[i] = INT_MAX;
+        sptSet[i] = false;
+        parent[i] = -1;  // Initialize parent array
+    }
+
+    // Distance of source vertex from itself is always 0
+    dist[src] = 0;
+
+    // Find shortest path for all vertices
+    for (count = 0; count < V - 1; count++) {
+        // Pick the minimum distance vertex from the set of vertices not yet processed
+        int u = minDistance(dist, sptSet);
+
+        // Mark the picked vertex as processed
+        sptSet[u] = true;
+
+        // Update dist value of the adjacent vertices of the picked vertex
+        for ( v = 0; v < V; v++)
+            // Update dist[v] only if it is not in sptSet, there's an edge from u to v,
+            // and total weight of path from src to v through u is smaller than current value of dist[v]
+            if (!sptSet[v] && graph->vertices[u][v] && dist[u] != INT_MAX && dist[u] + graph->vertices[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph->vertices[u][v];
+                parent[v] = u;  // Update parent[v] to store the path
+            }
+    }
+
+    // Print the distance and path to the target vertex
+    printSolution(dist, target, parent);
+}
+
+// Function to initialize the graph
+void initializeGraph(Graph* graph) {
+	int i,j;
+    for ( i = 0; i < V; i++) {
+        for ( j = 0; j < V; j++) {
+            graph->vertices[i][j] = 0;
+        }
+    }
+}
+
+// Function to add an edge to the graph
+void addEdge(Graph* graph, int src, int dest, int weight) {
+    graph->vertices[src][dest] = weight;
+    graph->vertices[dest][src] = weight;
+}
+
+//EARTHQUAKE AGENCY
+void EarthQuakeAgency(char tn[20]){
+	Graph graph;
+    	initializeGraph(&graph);
+
+    // Add edges to the graph
+    addEdge(&graph, 0, 1, 10);
+    addEdge(&graph, 0, 3, 6);
+    addEdge(&graph, 1, 2, 5);
+    addEdge(&graph, 1, 4, 11);
+    addEdge(&graph, 2, 5, 10);
+    addEdge(&graph, 2, 8, 180);
+    addEdge(&graph, 3, 4, 8);
+    addEdge(&graph, 3, 6, 6);
+    addEdge(&graph, 4, 5, 4);
+    addEdge(&graph, 4, 6, 12);
+    addEdge(&graph, 4, 7, 26);
+    addEdge(&graph, 5, 8, 140);
+    addEdge(&graph, 6, 7, 7);
+    addEdge(&graph, 7, 8, 115);
+    int i;
+
+    char location[20][20];
+    int population,  j, n, teamcapacity, flag, injured, choice, missing1,magnitude1;
+    printf("Select your location:\n");
+    printf("0] T. Nagar (Thyagaraya Nagar)\t 1] Velachery\t2] Madipakkam\n");
+    printf("3] Adyar\t4] Mylapore\t5] Guindy\n");
+    printf("6] Perungudi\t7] Tambaram\t8] Ambattur\n");
+    printf("Enter each edge in the format: source destination weight\n");
+  /*      for ( i = 0; i < 9; i++) {
+        int src, dest, weight;
+        printf("Edge %d: ", i + 1);
+        scanf("%d %d %d", &src, &dest, &weight);
+        addEdge(&graph, src, dest, weight);
+    }*/
+    printf("\nEnter the location you are in:");
+    scanf("%d",&choice);
+    printf("Enter the population for above specified region :");
+    scanf("%d",&population);
+    flag = choice;
+    if (population < 100)
+        teamcapacity = 5;
+    else if (population > 100 && population < 1000)
+        teamcapacity = 10;
+    else if (population > 1000 && population < 10000)
+        teamcapacity = 15;
+    else if (population > 10000)
+        teamcapacity = 20;
+    printf("\nRescue Team 1 is arriving to the location -->%d with %d members\n", choice, teamcapacity);
+
+    if (choice >= 0 && choice < V) {
+        dijkstra(&graph, 0, choice); // Assume 0 as the source vertex
+    } else {
+        printf("Invalid choice.\n");
+    }
+    ++top;
+    printf("Enter the magnitude:");
+    scanf("%d",&magnitude1);
+    y[top].magnitude = magnitude1;
+    printf("Enter No of People injured:");
+    scanf("%d", &injured);
+    y[top].injureddata = injured;
+    missing1 = population - injured;
+    y[top].missing = missing1;
+    FILE *p2;
+    p2 = fopen("earthquake.txt", "a+");
+    fprintf(p2, "Location Number:");
+    fprintf(p2, "%d\n", choice);
+    fprintf(p2, "Total Population: ");
+    fprintf(p2, "%d\n", population);
+    fprintf(p2, "Team Capacity:");
+    fprintf(p2, "%d\n", teamcapacity);
+    fprintf(p2, "No of People injured:");
+    fprintf(p2, "%d\n", y[top].injureddata);
+    fprintf(p2, "Earthquake Magnitude:");
+    fprintf(p2, "%d\n", y[top].magnitude);
+    fprintf(p2, "No of People Missing:");
+    fprintf(p2, "%d\n", y[top].missing);
+    fclose(p2);
+    
+    printf("\n\n\n\n\n");
+    printf("Printing the report\n");
+    printf("-----------------------------\n");
+    printf("Location Number:      %d\n", choice);
+    printf("-----------------------------\n");
+    printf("Team Name                : %s\n",tn);
+    printf("-----------------------------\n");
+    printf("Total Population:     %d\n", population);
+    printf("-----------------------------\n");
+    printf("Team Capacity:        %d\n", teamcapacity);
+    printf("-----------------------------\n");
+    printf("No of Peoples injured:%d\n", y[top].injureddata);
+    printf("-----------------------------\n");
+    printf("No of Peoples Missed: %d\n", y[top].missing);
+    printf("-----------------------------\n");
+    printf("Magnitude:             %d\n",y[top].magnitude);
+    printf("-----------------------------\n");
+}
